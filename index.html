@@ -35,9 +35,43 @@
     <main id="stage" aria-live="polite"></main>
 
     <div id="toast" class="toast" aria-live="assertive"></div>
-    <div id="fxLayer" class="fx-layer" aria-hidden="true"></div>\n    <div id="cursorKissLayer" class="cursor-kiss-layer" aria-hidden="true"></div>
+    <div id="fxLayer" class="fx-layer" aria-hidden="true"></div>
+    <div id="cursorKissLayer" class="cursor-kiss-layer" aria-hidden="true"></div>
   </div>
 
   <script src="app.js"></script>
+  <script>
+    // Final link/shortcut corrections for the live birthday build.
+    (() => {
+      const NEW_BOUQUET = "https://digibouquet.vercel.app/bouquet/2f10b888-7731-47ca-9c65-bf668a5b4a9d-";
+      const NEW_LETTERS = "https://openwhenletters.app/c/e65b3a05-572c-4959-a016-e941bc119a88/v/46b3666e1f59e68dfd95d39edcb50249f7299fe98efea9cbcb44da0784f79b5f-";
+      const OLD_BOUQUET = /https:\/\/digibouquet\.vercel\.app\/bouquet\/[^\"']+/g;
+      const OLD_LETTERS = /https:\/\/openwhenletters\.app\/c\/[^\"']+/g;
+
+      function fixExternalLinks(root = document) {
+        root.querySelectorAll?.('a[href], iframe[src]').forEach(el => {
+          if (el.tagName === 'A' && OLD_BOUQUET.test(el.href)) el.href = NEW_BOUQUET;
+          OLD_BOUQUET.lastIndex = 0;
+          if (el.tagName === 'A' && OLD_LETTERS.test(el.href)) el.href = NEW_LETTERS;
+          OLD_LETTERS.lastIndex = 0;
+          if (el.tagName === 'IFRAME' && OLD_BOUQUET.test(el.src)) el.src = NEW_BOUQUET;
+          OLD_BOUQUET.lastIndex = 0;
+        });
+      }
+
+      // app.js creates the surprise pages dynamically, so watch for them.
+      new MutationObserver(() => fixExternalLinks()).observe(document.documentElement, { childList: true, subtree: true });
+      fixExternalLinks();
+
+      // The original testing shortcut used G. Make S the official skip key.
+      window.addEventListener('keydown', e => {
+        if (e.key.toLowerCase() === 's') {
+          const active = document.activeElement;
+          const typing = active && (active.tagName === 'INPUT' || active.tagName === 'TEXTAREA' || active.isContentEditable);
+          if (!typing) window.dispatchEvent(new KeyboardEvent('keydown', { key: 'g', bubbles: true }));
+        }
+      });
+    })();
+  </script>
 </body>
 </html>
