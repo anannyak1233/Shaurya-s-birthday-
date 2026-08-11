@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#080b1e">
+  <meta name="description" content="A secret birthday journey for Adamya, created by Anannya.">
+  <title>Something is waiting for you…</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div id="app">
+    <div id="ambient" aria-hidden="true"></div>
+
+    <!-- Persistent audio: one element for the entire experience. -->
+    <audio id="birthdayAudio" preload="auto">
+      <source src="assets/birthday-song.mp4" type="audio/mp4">
+    </audio>
+
+    <div id="musicPrompt" class="music-prompt" role="dialog" aria-modal="true">
+      <div class="music-card">
+        <span class="eyebrow">A tiny request before we begin</span>
+        <h2>🎵 Before we begin...</h2>
+        <p>Start the birthday song?</p>
+        <button id="startMusicBtn" class="btn btn-primary">Play Birthday Song 🎵</button>
+        <button id="notNowBtn" class="text-btn" type="button">Not yet</button>
+      </div>
+    </div>
+
+    <div id="musicControl" class="music-control hidden">
+      <button id="musicToggle" type="button" aria-label="Pause birthday music">🎵 Music</button>
+      <span id="musicStatus">playing</span>
+    </div>
+
+    <main id="stage" aria-live="polite"></main>
+
+    <div id="toast" class="toast" aria-live="assertive"></div>
+    <div id="fxLayer" class="fx-layer" aria-hidden="true"></div>\n    <div id="cursorKissLayer" class="cursor-kiss-layer" aria-hidden="true"></div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
